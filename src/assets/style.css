@@ -1,0 +1,8 @@
+@font-face {
+    font-family: Ketchum;
+    src: url("fonts/Ketchum.otf") format("opentype");
+}
+
+.font-ketchum {
+    font-family: 'Ketchum', sans-serif;
+}
