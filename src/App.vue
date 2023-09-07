@@ -13,15 +13,21 @@
       </v-navigation-drawer>
 
       <v-main class="d-flex align-center justify-center" style="min-height: 300px">
-        <HelloWorld />
+        <v-container>
+          <v-row>
+            <v-col v-for="i in 20" :key="i" cols="3">
+              <PokemonCardLite :pokemon-id="i" />
+            </v-col>
+          </v-row>
+        </v-container>
       </v-main>
     </v-layout>
   </v-app>
 </template>
 
 <script setup lang="ts">
-import HelloWorld from '@/components/HelloWorld.vue'
 import useDrawerStore from '@/stores/drawer'
+import PokemonCardLite from '@/components/PokemonCardLite.vue'
 const { rail, toggle } = useDrawerStore()
 </script>
 
