@@ -15,8 +15,8 @@
       <v-main class="d-flex align-center justify-center" style="min-height: 300px">
         <v-container>
           <v-row>
-            <v-col v-for="i in 20" :key="i" cols="3">
-              <PokemonCardLite :pokemon-id="i" />
+            <v-col v-for="pokemon in results" :key="pokemon.name" cols="3">
+              <PokemonCardLite :name="pokemon.name" />
             </v-col>
           </v-row>
         </v-container>
@@ -27,8 +27,18 @@
 
 <script setup lang="ts">
 import useDrawerStore from '@/stores/drawer'
+import useQuery from '@/stores/query'
+import { onMounted, ref } from 'vue'
+import { NamedAPIResource } from '@/types/api/utility'
 import PokemonCardLite from '@/components/PokemonCardLite.vue'
 const { rail, toggle } = useDrawerStore()
+
+const results = ref<NamedAPIResource[]>([])
+const { get } = useQuery('pokemon-species')
+
+onMounted(async () => {
+  results.value = await get(6)
+})
 </script>
 
 <style>

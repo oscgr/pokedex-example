@@ -1,11 +1,11 @@
 import axios from 'axios'
-import { PokemonHabitat, PokemonSpecies } from '@/types/pokemon'
+import { PokemonHabitat, PokemonSpecies } from '@/types/api/pokemon'
 import { useLocalStorage } from '@vueuse/core'
+import { Resource } from '@/types/resources'
 
-type Resource = 'pokemon' | 'pokemon-species' | 'pokemon-habitat'
-export default function usePokemonGetter<T>(resource: Resource) {
-  const get = async (id: string | number) => {
-    const stored = useLocalStorage<T>(`${resource}-${id}`, null, {
+export default function useDetail<T>(resource: Resource) {
+  const get = async (name: string) => {
+    const stored = useLocalStorage<T>(`${resource}-${name}`, null, {
       serializer: {
         read: (v: string | undefined) => (v ? JSON.parse(v) : null),
         write: (v: T) => JSON.stringify(v),
@@ -18,7 +18,7 @@ export default function usePokemonGetter<T>(resource: Resource) {
 
     // If not present, get from API
     try {
-      const { data } = await axios.get<T>(`https://pokeapi.co/api/v2/${resource}/${id}`)
+      const { data } = await axios.get<T>(`https://pokeapi.co/api/v2/${resource}/${name}`)
       if (!!data) {
         stored.value = data
         return data

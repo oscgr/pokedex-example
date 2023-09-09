@@ -1,4 +1,4 @@
-import { Name } from '@/types/utility'
+import { Name } from '@/types/api/utility'
 
 type Lang = 'fr' | 'en'
 export default {
