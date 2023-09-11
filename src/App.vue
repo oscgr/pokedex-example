@@ -15,7 +15,7 @@
       <v-main>
         <div style="height: 100%" class="px-8 py-12 d-flex justify-space-between align-center">
           <v-btn icon="mdi mdi-menu-left" flat />
-          <PokemonCardLite class="mx-4" name="1" />
+          <PokemonCardLite class="mx-4" name="pidgeotto" />
           <v-btn icon="mdi mdi-menu-right" flat />
         </div>
       </v-main>

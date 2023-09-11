@@ -1,26 +1,31 @@
 import axios from 'axios'
-import { PokemonHabitat, PokemonSpecies } from '@/types/api/pokemon'
-import { useLocalStorage } from '@vueuse/core'
-import { Resource } from '@/types/resources'
+import { db } from './db'
+import { Table } from 'dexie'
+import { computed } from 'vue'
 
-export default function useDetail<T>(resource: Resource) {
+export default function useDetail<T>(table: Table<T>) {
+  const url = computed(() => {
+    switch (table) {
+      case db.pokemon:
+        return 'https://pokeapi.co/api/v2/pokemon'
+      case db.species:
+        return 'https://pokeapi.co/api/v2/pokemon-species'
+    }
+  })
   const get = async (name: string): Promise<T> => {
-    const stored = useLocalStorage<T>(`${resource}-${name}`, null, {
-      serializer: {
-        read: (v: string | undefined) => (v ? JSON.parse(v) : null),
-        write: (v: T) => JSON.stringify(v),
-      },
-    })
+    console.log(name)
+    const stored = await table.get(name)
+
     // Get from cache
-    if (!!stored.value) {
-      return stored.value
+    if (!!stored) {
+      return stored
     }
 
     // If not present, get from API
     try {
-      const { data } = await axios.get<T>(`https://pokeapi.co/api/v2/${resource}/${name}`)
+      const { data } = await axios.get<T>(`${url.value}/${name}`)
       if (!!data) {
-        stored.value = data
+        await table.add(data)
         return data
       } else {
         throw new Error('404')
@@ -29,5 +34,6 @@ export default function useDetail<T>(resource: Resource) {
       console.error(e)
     }
   }
+
   return { get }
 }

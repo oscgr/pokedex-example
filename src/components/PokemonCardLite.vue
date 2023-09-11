@@ -11,10 +11,11 @@ import { computed, onMounted, ref } from 'vue'
 import type { PokemonSpecies } from '@/types/api/pokemon'
 import useDetail from '@/stores/detail'
 import LanguageUtils from '@/utils/languageUtils'
+import { db } from '@/stores/db'
 
 const props = defineProps<{ name: string | number }>()
 
-const { get } = useDetail<PokemonSpecies>('pokemon-species')
+const { get } = useDetail<PokemonSpecies>(db.species)
 
 const loading = ref(false)
 const pokemon = ref<Partial<PokemonSpecies>>({})

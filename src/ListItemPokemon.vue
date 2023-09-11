@@ -15,11 +15,12 @@ import { Pokemon, PokemonSpecies } from '@/types/api/pokemon'
 import { computed, onMounted, ref } from 'vue'
 import LanguageUtils from '@/utils/languageUtils'
 import { Nullable } from '@/types/utils'
+import { db } from '@/stores/db'
 
 const props = defineProps<{ name: string }>()
 
-const { get } = useDetail<Pokemon>('pokemon')
-const { get: getSpecies } = useDetail<PokemonSpecies>('pokemon-species')
+const { get } = useDetail<Pokemon>(db.pokemon)
+const { get: getSpecies } = useDetail<PokemonSpecies>(db.species)
 
 const loading = ref(false)
 const pokemon = ref<Nullable<Pokemon>>(null)
