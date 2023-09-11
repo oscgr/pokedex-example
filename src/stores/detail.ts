@@ -4,7 +4,7 @@ import { useLocalStorage } from '@vueuse/core'
 import { Resource } from '@/types/resources'
 
 export default function useDetail<T>(resource: Resource) {
-  const get = async (name: string) => {
+  const get = async (name: string): Promise<T> => {
     const stored = useLocalStorage<T>(`${resource}-${name}`, null, {
       serializer: {
         read: (v: string | undefined) => (v ? JSON.parse(v) : null),

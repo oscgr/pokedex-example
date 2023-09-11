@@ -2,7 +2,7 @@
   "name": "pokedex-example",
   "version": "1.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "bunx --bun vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview"
   },

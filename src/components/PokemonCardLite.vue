@@ -1,5 +1,5 @@
 <template>
-  <v-card :loading="loading">
+  <v-card :loading="loading" width="100%" height="100%">
     <v-card-title v-text="pokemonName"></v-card-title>
     <v-card-subtitle v-text="pokemon.id"></v-card-subtitle>
     <v-img :src="pokemon.sprites?.front_default" />

@@ -5,7 +5,7 @@ import { Resource } from '@/types/resources'
 import { NamedAPIResourceList } from '@/types/api/utility'
 
 export default function useQuery(resource: Resource) {
-  const PAGE_SIZE = 50
+  const PAGE_SIZE = 5
   const get = async (page: number) => {
     const params = {
       limit: PAGE_SIZE,

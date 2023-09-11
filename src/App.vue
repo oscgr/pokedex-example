@@ -1,25 +1,23 @@
 <template>
   <v-app>
-    <v-layout class="rounded rounded-md">
-      <v-app-bar>
+    <v-layout>
+      <v-app-bar density="comfortable">
         <v-app-bar-nav-icon icon="mdi mdi-menu" @click="toggle" />
         <span style="font-size: 40px" class="mx-auto animate-character font-ketchum">Pokédex</span>
       </v-app-bar>
 
-      <v-navigation-drawer :rail="rail">
-        <v-list>
-          <v-list-item title="Navigation drawer"></v-list-item>
+      <v-navigation-drawer v-model="opened" :rail="rail" @click="rail = false">
+        <v-list density="comfortable" nav>
+          <ListItemPokemon v-for="pokemon in results" :key="pokemon.name" :name="pokemon.name" />
         </v-list>
       </v-navigation-drawer>
 
-      <v-main class="d-flex align-center justify-center" style="min-height: 300px">
-        <v-container>
-          <v-row>
-            <v-col v-for="pokemon in results" :key="pokemon.name" cols="3">
-              <PokemonCardLite :name="pokemon.name" />
-            </v-col>
-          </v-row>
-        </v-container>
+      <v-main>
+        <div style="height: 100%" class="px-8 py-12 d-flex justify-space-between align-center">
+          <v-btn icon="mdi mdi-menu-left" flat />
+          <PokemonCardLite class="mx-4" name="1" />
+          <v-btn icon="mdi mdi-menu-right" flat />
+        </div>
       </v-main>
     </v-layout>
   </v-app>
@@ -28,17 +26,21 @@
 <script setup lang="ts">
 import useDrawerStore from '@/stores/drawer'
 import useQuery from '@/stores/query'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { NamedAPIResource } from '@/types/api/utility'
 import PokemonCardLite from '@/components/PokemonCardLite.vue'
-const { rail, toggle } = useDrawerStore()
+import ListItemPokemon from '@/ListItemPokemon.vue'
+
+const { rail, opened, toggle, watcher, mobile } = useDrawerStore()
 
 const results = ref<NamedAPIResource[]>([])
-const { get } = useQuery('pokemon-species')
+const { get } = useQuery('pokemon')
 
 onMounted(async () => {
-  results.value = await get(6)
+  results.value = await get(0)
 })
+
+watch(mobile, watcher)
 </script>
 
 <style>
