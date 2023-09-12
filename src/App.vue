@@ -7,10 +7,7 @@
       </v-app-bar>
 
       <v-navigation-drawer v-model="opened" :rail="rail" @click="rail = false" rail-width="90">
-        <v-list density="comfortable" v-model:selected="listSelected" mandatory>
-          <v-list-subheader>Liste des Pokémon</v-list-subheader>
-          <ListItemPokemon v-for="pokemon in results" :key="pokemon.name" :name="pokemon.name" />
-        </v-list>
+        <ListPokemon />
       </v-navigation-drawer>
 
       <v-main>
@@ -26,22 +23,11 @@
 
 <script setup lang="ts">
 import useDrawerStore from '@/stores/drawer'
-import useQuery from '@/stores/query'
-import { onMounted, ref, watch } from 'vue'
-import { NamedAPIResource } from '@/types/api/utility'
+import { watch } from 'vue'
 import PokemonCard from '@/components/PokemonCard.vue'
-import ListItemPokemon from '@/ListItemPokemon.vue'
-import usePokemonSelection from '@/stores/pokemonSelection'
+import ListPokemon from '@/components/ListPokemon/ListPokemon.vue'
 
 const { rail, opened, toggle, watcher, mobile } = useDrawerStore()
-
-const results = ref<NamedAPIResource[]>([])
-const { get } = useQuery('pokemon')
-const { listSelected } = usePokemonSelection()
-
-onMounted(async () => {
-  results.value = (await get(0)) || []
-})
 
 watch(mobile, watcher)
 </script>
