@@ -1,7 +1,7 @@
 <template>
   <v-list-item density="comfortable" variant="text" :value="name" color="primary">
     <template #prepend>
-      <v-img height="50px" width="50px" :src="pokemon?.sprites?.front_default"></v-img>
+      <v-img height="50px" width="50px" :src="pokemonSprite"></v-img>
     </template>
     <v-list-item-title class="pl-4">
       <span v-text="pokemonTranslatedName" />
@@ -16,6 +16,7 @@ import { computed, onMounted, ref } from 'vue'
 import LanguageUtils from '@/utils/languageUtils'
 import { Nullable } from '@/types/utils'
 import { db } from '@/stores/db'
+import PokemonUtils from '@/utils/pokemonUtils'
 
 const props = defineProps<{ name: string }>()
 
@@ -28,11 +29,15 @@ const species = ref<Nullable<PokemonSpecies>>(null)
 
 const pokemonTranslatedName = computed(() => LanguageUtils.getLanguageName(species.value?.names, 'fr'))
 
+const pokemonSprite = computed(() => {
+  if (!pokemon.value) return ''
+  return PokemonUtils.getBestPossibleSprite(pokemon.value)
+})
 onMounted(async () => {
   try {
     loading.value = true
-    pokemon.value = await get(props.name)
-    species.value = await getSpecies(pokemon.value.species.name)
+    pokemon.value = (await get(props.name)) || null
+    if (pokemon.value) species.value = (await getSpecies(pokemon.value.species.name)) || null
   } finally {
     loading.value = false
   }

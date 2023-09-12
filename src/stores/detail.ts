@@ -15,7 +15,6 @@ export default function useDetail<T>(table: Table<T>) {
     }
   })
   const get = async (name: string) => {
-    console.log(name)
     const stored = await table.get(name)
 
     // Get from cache
