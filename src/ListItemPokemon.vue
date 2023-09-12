@@ -1,9 +1,10 @@
 <template>
   <v-list-item density="comfortable" variant="text" :value="name" color="primary">
     <template #prepend>
-      <v-img height="50px" width="50px" :src="pokemonSprite"></v-img>
+      <v-progress-circular color="primary" indeterminate width="1" v-if="loading" />
+      <v-img v-else height="50px" width="50px" :src="pokemonSprite"></v-img>
     </template>
-    <v-list-item-title class="pl-4">
+    <v-list-item-title class="pl-4" v-show="!loading">
       <span v-text="pokemonTranslatedName" />
       <span class="text-grey" v-text="`#${pokemon?.id}`" />
     </v-list-item-title>

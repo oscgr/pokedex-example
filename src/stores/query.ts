@@ -12,8 +12,7 @@ export default function useQuery(resource: Resource) {
 
     const stored = await db.queries.where('[resource+limit+offset]').equals([resource, params.limit, params.offset]).first()
 
-    console.log(stored)
-    if (stored) return stored
+    if (stored) return stored.results
     try {
       const { data } = await axios.get<NamedAPIResourceList>(`https://pokeapi.co/api/v2/${resource}`, { params })
       if (data) {
