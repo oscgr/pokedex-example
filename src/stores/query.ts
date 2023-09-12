@@ -1,9 +1,7 @@
 import axios from 'axios'
-import { PokemonHabitat, PokemonSpecies } from '@/types/api/pokemon'
-import { useLocalStorage } from '@vueuse/core'
-import { Resource } from '@/types/resources'
 import { NamedAPIResourceList } from '@/types/api/utility'
 
+export type Resource = 'pokemon' | 'pokemon-species'
 export default function useQuery(resource: Resource) {
   const PAGE_SIZE = 50
   const get = async (page: number) => {
@@ -13,7 +11,7 @@ export default function useQuery(resource: Resource) {
     }
     try {
       const { data } = await axios.get<NamedAPIResourceList>(`https://pokeapi.co/api/v2/${resource}`, { params })
-      if (!!data) {
+      if (data) {
         return data.results
       } else {
         throw new Error('404')

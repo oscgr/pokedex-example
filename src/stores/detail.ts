@@ -10,21 +10,23 @@ export default function useDetail<T>(table: Table<T>) {
         return 'https://pokeapi.co/api/v2/pokemon'
       case db.species:
         return 'https://pokeapi.co/api/v2/pokemon-species'
+      default:
+        throw Error('Incorrect table')
     }
   })
-  const get = async (name: string): Promise<T> => {
+  const get = async (name: string) => {
     console.log(name)
     const stored = await table.get(name)
 
     // Get from cache
-    if (!!stored) {
+    if (stored) {
       return stored
     }
 
     // If not present, get from API
     try {
       const { data } = await axios.get<T>(`${url.value}/${name}`)
-      if (!!data) {
+      if (data) {
         await table.add(data)
         return data
       } else {

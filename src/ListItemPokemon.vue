@@ -1,5 +1,5 @@
 <template>
-  <v-list-item density="comfortable" variant="elevated">
+  <v-list-item density="comfortable" variant="text" :value="name" color="primary">
     <template #prepend>
       <v-img height="50px" width="50px" :src="pokemon?.sprites?.front_default"></v-img>
     </template>

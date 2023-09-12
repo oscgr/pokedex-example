@@ -6,8 +6,9 @@
         <span style="font-size: 40px" class="mx-auto animate-character font-ketchum">Pokédex</span>
       </v-app-bar>
 
-      <v-navigation-drawer v-model="opened" :rail="rail" @click="rail = false">
-        <v-list density="comfortable" nav>
+      <v-navigation-drawer v-model="opened" :rail="rail" @click="rail = false" rail-width="90">
+        <v-list density="comfortable" v-model:selected="listSelected" mandatory>
+          <v-list-subheader>Liste des Pokémon</v-list-subheader>
           <ListItemPokemon v-for="pokemon in results" :key="pokemon.name" :name="pokemon.name" />
         </v-list>
       </v-navigation-drawer>
@@ -15,7 +16,7 @@
       <v-main>
         <div style="height: 100%" class="px-8 py-12 d-flex justify-space-between align-center">
           <v-btn icon="mdi mdi-menu-left" flat />
-          <PokemonCardLite class="mx-4" name="pidgeotto" />
+          <PokemonCard class="mx-4" />
           <v-btn icon="mdi mdi-menu-right" flat />
         </div>
       </v-main>
@@ -28,16 +29,18 @@ import useDrawerStore from '@/stores/drawer'
 import useQuery from '@/stores/query'
 import { onMounted, ref, watch } from 'vue'
 import { NamedAPIResource } from '@/types/api/utility'
-import PokemonCardLite from '@/components/PokemonCardLite.vue'
+import PokemonCard from '@/components/PokemonCard.vue'
 import ListItemPokemon from '@/ListItemPokemon.vue'
+import usePokemonSelection from '@/stores/pokemonSelection'
 
 const { rail, opened, toggle, watcher, mobile } = useDrawerStore()
 
 const results = ref<NamedAPIResource[]>([])
 const { get } = useQuery('pokemon')
+const { listSelected } = usePokemonSelection()
 
 onMounted(async () => {
-  results.value = await get(0)
+  results.value = (await get(0)) || []
 })
 
 watch(mobile, watcher)
