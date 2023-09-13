@@ -11,11 +11,13 @@
       </v-navigation-drawer>
 
       <v-main>
-        <div style="height: 100%" class="px-8 py-12 d-flex justify-space-between align-center">
-          <v-btn icon="mdi mdi-menu-left" flat />
-          <PokemonCard class="mx-4" />
-          <v-btn icon="mdi mdi-menu-right" flat />
-        </div>
+        <v-container>
+          <v-row>
+            <v-col cols="12">
+              <PokemonCard />
+            </v-col>
+          </v-row>
+        </v-container>
       </v-main>
     </v-layout>
   </v-app>

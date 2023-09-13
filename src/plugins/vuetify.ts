@@ -13,6 +13,10 @@ import { VInfiniteScroll } from 'vuetify/labs/VInfiniteScroll'
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
   components: { VInfiniteScroll },
+  locale: {
+    locale: 'fr',
+    fallback: 'en',
+  },
   theme: {
     defaultTheme: 'light',
     themes: {
