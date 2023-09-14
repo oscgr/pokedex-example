@@ -2,21 +2,12 @@
   <v-app>
     <v-layout>
       <v-app-bar density="comfortable">
-        <v-app-bar-nav-icon icon="mdi mdi-menu" @click="toggle" />
-        <span style="font-size: 40px" class="mx-auto animate-character font-ketchum">Pokédex</span>
+        <span style="font-size: 40px" class="mx-auto animate-character font-ketchum">Pokémon</span>
       </v-app-bar>
-
-      <v-navigation-drawer v-model="opened" :rail="rail" @click="rail = false" rail-width="90">
-        <ListPokemon />
-      </v-navigation-drawer>
 
       <v-main>
         <v-container>
-          <v-row>
-            <v-col cols="12">
-              <PokemonCard />
-            </v-col>
-          </v-row>
+          <PokemonList />
         </v-container>
       </v-main>
     </v-layout>
@@ -24,14 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import useDrawerStore from '@/stores/drawer'
-import { watch } from 'vue'
-import PokemonCard from '@/components/PokemonCard.vue'
-import ListPokemon from '@/components/ListPokemon/ListPokemon.vue'
-
-const { rail, opened, toggle, watcher, mobile } = useDrawerStore()
-
-watch(mobile, watcher)
+import PokemonList from '@/components/PokemonList/PokemonList.vue'
 </script>
 
 <style>

@@ -2,6 +2,7 @@ import axios from 'axios'
 import { db } from './db'
 import { Table } from 'dexie'
 import { computed } from 'vue'
+import { NamedAPIResource } from '@/types/api/utility'
 
 export default function useDetail<T>(table: Table<T>) {
   const url = computed(() => {
@@ -10,6 +11,8 @@ export default function useDetail<T>(table: Table<T>) {
         return 'https://pokeapi.co/api/v2/pokemon'
       case db.species:
         return 'https://pokeapi.co/api/v2/pokemon-species'
+      case db.generation:
+        return 'https://pokeapi.co/api/v2/generation'
       default:
         throw Error('Incorrect table')
     }
@@ -23,18 +26,19 @@ export default function useDetail<T>(table: Table<T>) {
     }
 
     // If not present, get from API
-    try {
-      const { data } = await axios.get<T>(`${url.value}/${name}`)
-      if (data) {
-        await table.add(data)
-        return data
-      } else {
-        throw new Error('404')
-      }
-    } catch (e) {
-      console.error(e)
+    const { data } = await axios.get<T>(`${url.value}/${name}`)
+    if (data) {
+      await table.add(data)
+      return data
+    } else {
+      throw new Error('404')
     }
   }
 
-  return { get }
+  const getAll = async (results: NamedAPIResource[]): Promise<T[]> => {
+    const data = (await Promise.allSettled(results.map((r) => get(r.name)))).filter((r) => r.status === 'fulfilled').map((r) => r.value) as T[]
+    if (data) return data
+    else return []
+  }
+  return { get, getAll }
 }

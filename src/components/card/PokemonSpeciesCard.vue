@@ -1,5 +1,5 @@
 <template>
-  <v-list-item density="comfortable" variant="text" :value="name" color="primary">
+  <v-card density="comfortable" :value="name" rounded="xl">
     <template #prepend>
       <v-progress-circular color="primary" indeterminate width="1" v-if="loading" />
       <v-img v-else height="50px" width="50px" :src="pokemonSprite"></v-img>
@@ -8,7 +8,7 @@
       <span v-text="pokemonTranslatedName" />
       <span class="text-grey" v-text="`#${pokemon?.id}`" />
     </v-list-item-title>
-  </v-list-item>
+  </v-card>
 </template>
 <script lang="ts" setup>
 import useDetail from '@/stores/detail'
@@ -38,7 +38,7 @@ onMounted(async () => {
   try {
     loading.value = true
     pokemon.value = (await get(props.name)) || null
-    if (pokemon.value) species.value = (await getSpecies(pokemon.value.species.name)) || null
+    if (pokemon.value) species.value = (await getSpecies(pokemon.value?.species.name)) || null
   } finally {
     loading.value = false
   }
