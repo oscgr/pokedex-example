@@ -30,6 +30,14 @@ export default createVuetify({
           background: '#ffe586',
         },
       },
+      dark: {
+        colors: {
+          primary: '#2772b9',
+          'primary-darken-1': '#104987',
+          secondary: '#ffcc02',
+          background: '#414141',
+        },
+      },
     },
   },
 })

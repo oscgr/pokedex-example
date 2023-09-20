@@ -1,14 +1,19 @@
 <template>
-  <v-card density="comfortable" :value="name" rounded="xl">
-    <template #prepend>
-      <v-progress-circular color="primary" indeterminate width="1" v-if="loading" />
-      <v-img v-else height="50px" width="50px" :src="pokemonSprite"></v-img>
+  <v-hover>
+    <template v-slot:default="{ isHovering, props }">
+      <v-card v-bind="props" density="comfortable" rounded="xl" :elevation="isHovering ? 12 : 2" @click="open(name)" :class="{ 'on-hover': isHovering }">
+        <v-card-text class="text-center">
+          <v-overlay>toot</v-overlay>
+          <v-progress-circular color="primary" size="120" indeterminate width="1" v-if="loading" />
+          <v-img height="120px" v-else :src="pokemonSprite"></v-img>
+        </v-card-text>
+        <v-card-actions class="justify-center" v-show="!loading">
+          <div v-text="pokemonTranslatedName" />
+          <div class="text-grey" v-text="`#${pokemon?.id}`" />
+        </v-card-actions>
+      </v-card>
     </template>
-    <v-list-item-title class="pl-4" v-show="!loading">
-      <span v-text="pokemonTranslatedName" />
-      <span class="text-grey" v-text="`#${pokemon?.id}`" />
-    </v-list-item-title>
-  </v-card>
+  </v-hover>
 </template>
 <script lang="ts" setup>
 import useDetail from '@/stores/detail'
@@ -18,11 +23,13 @@ import LanguageUtils from '@/utils/languageUtils'
 import { Nullable } from '@/types/utils'
 import { db } from '@/stores/db'
 import PokemonUtils from '@/utils/pokemonUtils'
+import usePokemonDetailDialog from '@/stores/pokemonDetailDialog'
 
 const props = defineProps<{ name: string }>()
 
 const { get } = useDetail<Pokemon>(db.pokemon)
 const { get: getSpecies } = useDetail<PokemonSpecies>(db.species)
+const { open } = usePokemonDetailDialog()
 
 const loading = ref(false)
 const pokemon = ref<Nullable<Pokemon>>(null)
@@ -44,3 +51,20 @@ onMounted(async () => {
   }
 })
 </script>
+
+<style scoped>
+.v-card {
+  transition: opacity 1s ease-in-out;
+}
+
+.v-card:not(.on-hover) {
+  opacity: 0.9;
+}
+
+.show-btns {
+  color: rgba(255, 255, 255, 1) !important;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+</style>
