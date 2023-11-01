@@ -1,4 +1,8 @@
-# Pokédex example
+# Yet another Pokédex
+##### Academic purpose - a good exercise to learn Vue for students
+###### This repo serves as a homework corrected but there are many ways to do it
+
+![App start screenshot](readme/app.png)
 
 ## Project setup
 
